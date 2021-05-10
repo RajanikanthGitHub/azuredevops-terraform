@@ -50,3 +50,4 @@ stages:
           tenant_id     : $(tenant_id)
           client_id     : $(client_id)
           client_secret : $(client_secret)
+          tf_var_imageBuild: $(tag)
