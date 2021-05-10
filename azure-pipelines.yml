@@ -28,3 +28,25 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
+- stage: Provision
+  displayName: Terraform on Azure
+  dependsOn: Build
+  jobs:
+    - job: Provision
+      displayName: Provisioning Container Instance
+      pool:
+        vmImage: ubuntu-latest
+      variables:
+      - group: terraformenvvars
+      steps:
+      - script: 
+          set -e 
+          terraform init -input=false
+          terraform apply -input=false -auto-approve
+        name: 'RunTerraform'
+        displayName: 'RunTerraform' 
+        env:
+          subscription_id : $(subscription_id)
+          tenant_id     : $(tenant_id)
+          client_id     : $(client_id)
+          client_secret : $(client_secret)
